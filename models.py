@@ -12,15 +12,15 @@ VALID_CMD_PARAMS = (
 
 
 class RequestParams(Schema):
-    cmd1 = fields.Str(required=True)
-    value1 = fields.Str(required=True)
-    cmd2 = fields.Str(required=True)
-    value2 = fields.Str(required=True)
+    cmd = fields.Str(required=True)
+    value = fields.Str(required=True)
 
     @validates_schema
     def validate(self, values, *args, **kwargs):
-        if values['cmd1'] not in VALID_CMD_PARAMS:
+        if values['cmd'] not in VALID_CMD_PARAMS:
             raise ValidationError('"cmd1" invalid value')
-        if values['cmd2'] not in VALID_CMD_PARAMS:
-            raise ValidationError('"cmd2" invalid value')
         return values
+
+
+class BatchRequestParams(Schema):
+    queries = fields.Nested(RequestParams, many=True)
